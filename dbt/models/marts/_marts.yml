@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dim_loan
+    description: Loan dimension with current status and lifetime delinquency flags.
+    columns:
+      - name: loan_id
+        data_tests: [unique, not_null]
+      - name: current_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["CURRENT", "DPD_30", "DPD_60", "DPD_90_PLUS", "DEFAULT"]
+
+  - name: fct_portfolio_monthly
+    description: Monthly portfolio KPIs by product and credit tier.
+    data_tests:
+      - dbt_utils_free_unique_combination:
+          arguments:
+            columns: [reporting_month, product, credit_tier]
+    columns:
+      - name: active_loans
+        data_tests: [not_null]

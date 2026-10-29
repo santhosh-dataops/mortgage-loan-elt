@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_loans
+    description: One row per originated loan, typed and tiered.
+    columns:
+      - name: loan_id
+        data_tests: [unique, not_null]
+      - name: product
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["30Y_FIXED", "15Y_FIXED", "7_1_ARM"]
+      - name: credit_tier
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["SUPER_PRIME", "PRIME", "NEAR_PRIME", "SUBPRIME"]
+
+  - name: stg_servicing
+    description: One row per loan per reporting month.
+    data_tests:
+      - dbt_utils_free_unique_combination:
+          arguments:
+            columns: [loan_id, reporting_month]
+    columns:
+      - name: loan_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_loans')
+                field: loan_id
+      - name: days_past_due
+        data_tests: [not_null]

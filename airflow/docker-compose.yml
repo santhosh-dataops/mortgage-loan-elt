@@ -1,0 +1,14 @@
+# Minimal single-node Airflow for local runs: http://localhost:8080 (admin / admin)
+services:
+  airflow:
+    image: apache/airflow:2.10.3-python3.11
+    command: bash -c "pip install -q -r /opt/airflow/project/requirements.txt && airflow standalone"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      _AIRFLOW_WWW_USER_USERNAME: admin
+      _AIRFLOW_WWW_USER_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ../:/opt/airflow/project

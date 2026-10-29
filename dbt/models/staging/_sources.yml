@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: loan_origination
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after: { count: 26, period: hour }
+      - name: loan_servicing
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after: { count: 26, period: hour }

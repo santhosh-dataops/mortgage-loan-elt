@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -r requirements.txt
+      - name: Unit tests
+        run: pytest -q
+      - name: Extract & load sample data
+        run: python ingestion/generate_and_load.py --db warehouse.duckdb --loans 2000 --months 18
+      - name: dbt build (models + tests)
+        working-directory: dbt
+        env:
+          DBT_PROFILES_DIR: .
+          DUCKDB_PATH: ../warehouse.duckdb
+        run: dbt build

@@ -1,0 +1,18 @@
+mortgage_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', '../warehouse.duckdb') }}"
+      threads: 4
+    # Same models run on Snowflake by switching target: dbt build --target prod
+    prod:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', '') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', '') }}"
+      authenticator: externalbrowser
+      role: TRANSFORMER
+      warehouse: TRANSFORM_WH
+      database: ANALYTICS
+      schema: MORTGAGE
+      threads: 8
