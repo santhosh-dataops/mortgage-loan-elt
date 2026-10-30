@@ -2,7 +2,7 @@
 
 Batch ELT pipeline that lands mortgage **origination** and monthly **servicing** data, then uses dbt to build tested, analytics-ready marts for portfolio risk reporting: delinquency rates, roll rates and current loan status.
 
-![CI](https://github.com/GITHUB_USERNAME/mortgage-loan-elt/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/santhosh-dataops/mortgage-loan-elt/actions/workflows/ci.yml/badge.svg)
 
 ## Architecture
 
